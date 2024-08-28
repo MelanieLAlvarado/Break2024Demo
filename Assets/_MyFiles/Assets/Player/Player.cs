@@ -10,18 +10,22 @@ using Vector3 = UnityEngine.Vector3;
 public class Player : MonoBehaviour
 {
     [SerializeField] private GameplayWidget gameplayWidgetPrefab;
+    [SerializeField] private float speed = 6f;
+    [SerializeField] private ViewCamera viewCameraPrefab;
     private GameplayWidget _gameplayWidget;
     private CharacterController _characterController;
     private Animator _animator;
+    private ViewCamera _viewCamera;
 
     private Vector2 _moveInput;
-    [SerializeField] private float _speed = 10f;
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         _gameplayWidget = Instantiate(gameplayWidgetPrefab);
         _gameplayWidget.MoveStick.OnInputUpdated += InputUpdated;
+        _viewCamera = Instantiate(viewCameraPrefab);
+        _viewCamera.SetFollowParent(transform);
     }
 
     private void InputUpdated(Vector2 inputVal)
@@ -37,6 +41,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        _characterController.Move(new Vector3(_moveInput.x, 0, _moveInput.y) * (_speed * Time.deltaTime));
+        _characterController.Move(new Vector3(_moveInput.x, 0, _moveInput.y) * (speed * Time.deltaTime));
     }
 }
