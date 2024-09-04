@@ -249,3 +249,4 @@ MonoBehaviour:
   pitchTransform: {fileID: 7816501619040366345}
   viewCamera: {fileID: 5460180210857756694}
   armLength: 7
+  cameraTurnSpeed: 60
