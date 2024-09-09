@@ -10,7 +10,7 @@ public class AttachSocket : MonoBehaviour
 {
     [SerializeField] string socketName;
 
-    bool IsForSocket(ISocketInterface socketInterface)
+    public bool IsForSocket(ISocketInterface socketInterface)
     { 
         return socketName == socketInterface.GetSocketName();
     }
