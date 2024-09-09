@@ -10,19 +10,22 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed = 10f;
     [SerializeField] private float bodyTurnSpeed = 10f;
     [SerializeField] private ViewCamera viewCameraPrefab;
+    [SerializeField] private float animTurnLerpScale = 5f;
     private GameplayWidget _gameplayWidget;
     
-    
     private CharacterController _characterController;
-    private Animator _animator;
+    
+    
     private ViewCamera _viewCamera;
+    private Animator _animator;
+    private float _animTurnSpeed;
 
     private Vector2 _moveInput;
     private Vector2 _aimInput;
 
-    static int animFwdId = Animator.StringToHash("ForwardAmount");
-    static int animRightId = Animator.StringToHash("RightAmount");
-    static int animTurnId = Animator.StringToHash("TurnAmount");
+    static int _animFwdId = Animator.StringToHash("ForwardAmount");
+    static int _animRightId = Animator.StringToHash("RightAmount");
+    static int _animTurnId = Animator.StringToHash("TurnAmount");
 
     private void Awake()
     {
@@ -73,14 +76,16 @@ public class Player : MonoBehaviour
             angleDelta = Vector3.SignedAngle(transform.forward, prevDir, Vector3.up);
             Debug.Log(angleDelta);
         }
-        _animator.SetFloat(animTurnId, angleDelta/Time.deltaTime);
+
+        _animTurnSpeed = Mathf.Lerp(_animTurnSpeed, angleDelta/Time.deltaTime, Time.deltaTime * animTurnLerpScale);
+        _animator.SetFloat(_animTurnId, _animTurnSpeed);
 
         float animFwdAmt = Vector3.Dot(moveDir, transform.forward);
         float animRightAmt = Vector3.Dot(moveDir, transform.right);
 
 
-        _animator.SetFloat(animFwdId, animFwdAmt);
-        _animator.SetFloat(animRightId, animRightAmt);
+        _animator.SetFloat(_animFwdId, animFwdAmt);
+        _animator.SetFloat(_animRightId, animRightAmt);
 
 
     }
