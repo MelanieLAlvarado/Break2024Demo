@@ -6,6 +6,7 @@ using System.Collections;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SocketManager))]
 [RequireComponent(typeof(InventoryComponent))]
+[RequireComponent(typeof(HealthComponent))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private GameplayWidget gameplayWidgetPrefab;
@@ -16,26 +17,30 @@ public class Player : MonoBehaviour
     private GameplayWidget _gameplayWidget;
     
     private CharacterController _characterController;
-    
-    
     private ViewCamera _viewCamera;
+    private InventoryComponent _inventoryComponent;
+    
     private Animator _animator;
     private float _animTurnSpeed;
 
     private Vector2 _moveInput;
     private Vector2 _aimInput;
 
-    static int _animFwdId = Animator.StringToHash("ForwardAmount");
-    static int _animRightId = Animator.StringToHash("RightAmount");
-    static int _animTurnId = Animator.StringToHash("TurnAmount");
+    private readonly static int _animFwdId = Animator.StringToHash("ForwardAmount");
+    private readonly static int _animRightId = Animator.StringToHash("RightAmount");
+    private readonly static int _animTurnId = Animator.StringToHash("TurnAmount");
+    private readonly int _switchWeaponId = Animator.StringToHash("SwitchWeapon");
+    private readonly static int _fireId = Animator.StringToHash("Firing");
 
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+        _inventoryComponent = GetComponent<InventoryComponent>();
         _gameplayWidget = Instantiate(gameplayWidgetPrefab);
         _gameplayWidget.MoveStick.OnInputUpdated += MoveInputUpdated;
         _gameplayWidget.AimStick.OnInputUpdated += AimInputUpdated;
+        _gameplayWidget.AimStick.OnInputClicked += SwitchWeapon;
         _viewCamera = Instantiate(viewCameraPrefab);
         _viewCamera.SetFollowParent(transform);
     }
@@ -48,7 +53,19 @@ public class Player : MonoBehaviour
     private void AimInputUpdated(Vector2 inputVal)
     {
         _aimInput = inputVal;
-        Debug.Log(inputVal);
+        _animator.SetBool("Firing", _aimInput != Vector2.zero);
+    }
+    private void SwitchWeapon() 
+    {
+        _animator.SetTrigger(_switchWeaponId);
+    }
+    public void AttackPoint() 
+    {
+        _inventoryComponent.FireCurrentActiveWeapon();
+    }
+    public void WeaponSwitchPoint()
+    { 
+        _inventoryComponent.EquipNextWeapon();
     }
 
     void Start()
@@ -76,7 +93,6 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, goalRot, Time.deltaTime * bodyTurnSpeed);
 
             angleDelta = Vector3.SignedAngle(transform.forward, prevDir, Vector3.up);
-            Debug.Log(angleDelta);
         }
 
         _animTurnSpeed = Mathf.Lerp(_animTurnSpeed, angleDelta/Time.deltaTime, Time.deltaTime * animTurnLerpScale);

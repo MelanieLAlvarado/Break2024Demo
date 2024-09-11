@@ -22,7 +22,7 @@ public class InventoryComponent : MonoBehaviour
 
         EquipNextWeapon();
     }
-    private void EquipNextWeapon()
+    public void EquipNextWeapon()
     {
         if (_weapons.Count == 0) { return; }
 
@@ -40,5 +40,12 @@ public class InventoryComponent : MonoBehaviour
         }
 
         _currentWeaponIndex = nextWeaponIndex;
+    }
+    public void FireCurrentActiveWeapon() 
+    {
+        if (_currentWeaponIndex >= 0 && _currentWeaponIndex < _weapons.Count)
+        {
+            _weapons[_currentWeaponIndex].Attack();
+        }
     }
 }

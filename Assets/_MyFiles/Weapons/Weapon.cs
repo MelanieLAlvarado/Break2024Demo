@@ -44,5 +44,6 @@ public abstract class Weapon : MonoBehaviour, ISocketInterface //is monobehaviou
     {
         return gameObject;
     }
+    public abstract void Attack(); //able to have child class override this
 
 }
