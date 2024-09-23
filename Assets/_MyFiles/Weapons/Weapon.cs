@@ -5,6 +5,8 @@ public abstract class Weapon : MonoBehaviour, ISocketInterface //is monobehaviou
     //abstract means that this class cannot be instanced.
     [SerializeField] string attachSocketName;
     [SerializeField] AnimatorOverrideController overrideController;
+    [SerializeField] private float attackAnimSpeedMult = 1f;
+    private readonly static int _attackAnimSpeedId = Animator.StringToHash("attackAnimSpeedMult");
     public GameObject Owner 
     {
         get;
@@ -28,6 +30,8 @@ public abstract class Weapon : MonoBehaviour, ISocketInterface //is monobehaviou
         if (ownerAnimator && overrideController) 
         {
             ownerAnimator.runtimeAnimatorController = overrideController;
+            
+            ownerAnimator.SetFloat(_attackAnimSpeedId, attackAnimSpeedMult);
         }
     }
     public void UnEquip() 
