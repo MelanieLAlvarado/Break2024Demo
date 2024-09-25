@@ -16,7 +16,7 @@ public class RangedWeapon : Weapon
         if (aimResult.target)
         {
             HealthComponent targetHealthComponent = aimResult.target.GetComponent<HealthComponent>();
-            targetHealthComponent?.ChangeHealth(-damage);
+            targetHealthComponent?.ChangeHealth(-damage, Owner);
         }
 
         bulletVFX.Emit(bulletVFX.emission.GetBurst(0).maxCount);

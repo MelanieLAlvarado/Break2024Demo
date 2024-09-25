@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attachSocketName: Revolver
   overrideController: {fileID: 22100000, guid: 5e4a3e3b7b1162845928c1bdd8d27a83, type: 2}
-  attackAnimSpeedMult: 1
+  attackAnimSpeedMult: 2
   bulletVFX: {fileID: 1163454821585653304}
   damage: 5
 --- !u!114 &4795353661720276446

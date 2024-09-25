@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
     private void MoveInputUpdated(Vector2 inputVal)
     {
         _moveInput = inputVal;
-        Debug.Log(inputVal);
+        //Debug.Log(inputVal);
     }
     private void AimInputUpdated(Vector2 inputVal)
     {

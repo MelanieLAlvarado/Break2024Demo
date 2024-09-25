@@ -17,7 +17,7 @@ public class HealthBar : ValueGauge
         Destroy(gameObject);
     }
 
-    private void HealthChanged(float newHealth, float delta, float maxHealth)
+    private void HealthChanged(float newHealth, float delta, float maxHealth, GameObject instigator)
     {
         UpdateValue(newHealth, maxHealth);
     }
