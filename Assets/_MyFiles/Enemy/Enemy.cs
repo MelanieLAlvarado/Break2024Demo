@@ -1,3 +1,5 @@
+using System;
+using Unity.Behavior;
 using UnityEngine;
 
 [RequireComponent(typeof(HealthComponent))]
@@ -7,6 +9,10 @@ public class Enemy : MonoBehaviour
     private Animator _animator;
     private static readonly int _deadId = Animator.StringToHash("Dead");
     
+
+    private PerceptionComponent _perceptionComponent;
+    private BehaviorGraphAgent _behaviourGraphAgent;
+
     private void Awake()
     {
         _healthComponent = GetComponent<HealthComponent>();
@@ -14,7 +20,24 @@ public class Enemy : MonoBehaviour
         _healthComponent.OnDead += StartDeath;
     
         _animator = GetComponent<Animator>();
+
+        _perceptionComponent = GetComponent<PerceptionComponent>();
+        _perceptionComponent.OnPerceptionTargetUpdated += HandleTargetUpdate;
+        _behaviourGraphAgent = GetComponent<BehaviorGraphAgent>();
     }
+
+    private void HandleTargetUpdate(GameObject target, bool bIsSensed)
+    {
+        if (bIsSensed)
+        {
+            _behaviourGraphAgent.BlackboardReference.SetVariableValue("Target", target);
+        }
+        else
+        {
+            _behaviourGraphAgent.BlackboardReference.SetVariableValue("Target", null);
+        }
+    }
+
     private void StartDeath() 
     {
         _animator.SetTrigger(_deadId);
