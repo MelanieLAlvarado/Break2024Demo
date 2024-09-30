@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ValueGauge : Widget
+public abstract class ValueGauge : Widget
 {
     [SerializeField] private Slider slider;
 
-    public void UpdateValue(float newValue, float newMaxValue) 
+    public virtual void UpdateValue(float newValue, float newMaxValue) 
     {
         if (newMaxValue == 0)
         {

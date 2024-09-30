@@ -21,6 +21,8 @@ GameObject:
   - component: {fileID: 5213625720774066191}
   - component: {fileID: 4214557779809789807}
   - component: {fileID: 5395307232427219251}
+  - component: {fileID: -6366162865758917175}
+  - component: {fileID: 3974654395300476809}
   m_Layer: 0
   m_Name: Chomper
   m_TagString: Untagged
@@ -70,6 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 500d570f5ddb0514cab1a21b13958c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teamID: 1
 --- !u!135 &4073006948891170873
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -256,6 +259,43 @@ MonoBehaviour:
           m_Value1: 11091202655161981749
         Name: PatrolPoints
         m_Value: []
+--- !u!114 &-6366162865758917175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267219458551871871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bede7085c16e994ba983ab566ebc3aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bAttackFriendly: 0
+  bAttackEnemy: 0
+  bAttackNeutral: 0
+  damage: 10
+--- !u!65 &3974654395300476809
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267219458551871871}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.8357978, y: 1.9371369, z: 2.1687016}
+  m_Center: {x: 0.05473444, y: 0.46856868, z: 2.531174}
 --- !u!1 &3384361381727604048
 GameObject:
   m_ObjectHideFlags: 0

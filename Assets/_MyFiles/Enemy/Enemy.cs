@@ -3,8 +3,9 @@ using Unity.Behavior;
 using UnityEngine;
 
 [RequireComponent(typeof(HealthComponent))]
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IBehaviorInterface, ITeamInterface
 {
+    [SerializeField] private int teamID = 1;
     private HealthComponent _healthComponent;
     private Animator _animator;
     private static readonly int _deadId = Animator.StringToHash("Dead");
@@ -12,6 +13,11 @@ public class Enemy : MonoBehaviour
 
     private PerceptionComponent _perceptionComponent;
     private BehaviorGraphAgent _behaviourGraphAgent;
+
+    public int GetTeamID() 
+    {
+        return teamID;
+    }
 
     private void Awake()
     {
@@ -34,7 +40,9 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            _behaviourGraphAgent.BlackboardReference.SetVariableValue("Target", null);
+            _behaviourGraphAgent.BlackboardReference.SetVariableValue<GameObject>("Target", null);
+            _behaviourGraphAgent.BlackboardReference.SetVariableValue("checkoutLocation", target.transform.position);
+            _behaviourGraphAgent.BlackboardReference.SetVariableValue("hasCheckLocation", true);
         }
     }
 
@@ -51,5 +59,10 @@ public class Enemy : MonoBehaviour
     private void TookDamage(float newHealth, float delta, float maxHealth, GameObject instigator) 
     {
         Debug.Log($"I took {delta} amt of damage, health is not {newHealth}/{maxHealth}");
+    }
+
+    public void Attack(GameObject target)
+    {
+        _animator.SetTrigger("Attack");
     }
 }

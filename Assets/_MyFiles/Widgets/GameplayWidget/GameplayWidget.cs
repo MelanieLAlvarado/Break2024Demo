@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class GameplayWidget : Widget
 {
-    
     [SerializeField] private JoyStick moveStick;
     [SerializeField] private JoyStick aimStick;
 
@@ -18,13 +17,13 @@ public class GameplayWidget : Widget
         private set => aimStick = value;
     }
 
-    void Start()
+    public override void SetOwner(GameObject newOwner)
     {
-        
-    }
-
-    void Update()
-    {
-        
+        base.SetOwner(newOwner);
+        Widget[] allWidgets = GetComponentsInChildren<Widget>();
+        foreach (Widget childWidget in allWidgets)
+        {
+            childWidget.SetOwner(newOwner);
+        }
     }
 }

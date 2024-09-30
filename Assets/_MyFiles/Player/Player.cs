@@ -7,8 +7,9 @@ using System.Collections;
 [RequireComponent(typeof(SocketManager))]
 [RequireComponent(typeof(InventoryComponent))]
 [RequireComponent(typeof(HealthComponent))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, ITeamInterface
 {
+    [SerializeField] private int teamID = 2;
     [SerializeField] private GameplayWidget gameplayWidgetPrefab;
     [SerializeField] private float speed = 10f;
     [SerializeField] private float bodyTurnSpeed = 10f;
@@ -32,6 +33,11 @@ public class Player : MonoBehaviour
     private readonly int _switchWeaponId = Animator.StringToHash("SwitchWeapon");
     private readonly static int _fireId = Animator.StringToHash("Firing");
 
+    public int GetTeamID() 
+    {
+        return teamID;
+    }
+
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -41,6 +47,9 @@ public class Player : MonoBehaviour
         _gameplayWidget.MoveStick.OnInputUpdated += MoveInputUpdated;
         _gameplayWidget.AimStick.OnInputUpdated += AimInputUpdated;
         _gameplayWidget.AimStick.OnInputClicked += SwitchWeapon;
+        _gameplayWidget.SetOwner(gameObject);
+
+
         _viewCamera = Instantiate(viewCameraPrefab);
         _viewCamera.SetFollowParent(transform);
     }
