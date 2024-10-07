@@ -23,7 +23,10 @@ public class GameplayWidget : Widget
         Widget[] allWidgets = GetComponentsInChildren<Widget>();
         foreach (Widget childWidget in allWidgets)
         {
-            childWidget.SetOwner(newOwner);
+            if (childWidget != this)
+            { 
+                childWidget.SetOwner(newOwner);
+            }
         }
     }
 }

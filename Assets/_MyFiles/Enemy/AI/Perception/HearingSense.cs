@@ -21,6 +21,11 @@ public class HearingSense : Sense
 
     private void HandleSoundEvent(float volume, Stimuli stimuli)
     {
+        if (stimuli == null)
+        {
+            Debug.Log("Missing stimuli on hearing comp!!");
+            return;
+        }
         Debug.Log($"Handling hearing event with volume: {volume} , and stimuli: {stimuli.gameObject.name}");
         float soundTravelDistance = Vector3.Distance(transform.position, stimuli.transform.position);
         float volumeAtOwner = volume - 20 * Mathf.Log(soundTravelDistance, 10) - _atteniation * soundTravelDistance;

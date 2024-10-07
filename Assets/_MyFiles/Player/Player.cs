@@ -7,7 +7,7 @@ using System.Collections;
 [RequireComponent(typeof(SocketManager))]
 [RequireComponent(typeof(InventoryComponent))]
 [RequireComponent(typeof(HealthComponent))]
-public class Player : MonoBehaviour, ITeamInterface
+public class Player : MonoBehaviour, ITeamInterface, ICameraInterface
 {
     [SerializeField] private int teamID = 2;
     [SerializeField] private GameplayWidget gameplayWidgetPrefab;
@@ -37,7 +37,10 @@ public class Player : MonoBehaviour, ITeamInterface
     {
         return teamID;
     }
-
+    public Camera GetCamera()
+    {
+        return _viewCamera.GetViewCamera();
+    }
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -116,4 +119,6 @@ public class Player : MonoBehaviour, ITeamInterface
 
 
     }
+
+
 }
