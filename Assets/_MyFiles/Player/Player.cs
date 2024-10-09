@@ -20,6 +20,7 @@ public class Player : MonoBehaviour, ITeamInterface, ICameraInterface
     private CharacterController _characterController;
     private ViewCamera _viewCamera;
     private InventoryComponent _inventoryComponent;
+    private HealthComponent _healthComponent;
     
     private Animator _animator;
     private float _animTurnSpeed;
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour, ITeamInterface, ICameraInterface
     private readonly static int _animTurnId = Animator.StringToHash("TurnAmount");
     private readonly int _switchWeaponId = Animator.StringToHash("SwitchWeapon");
     private readonly static int _fireId = Animator.StringToHash("Firing");
+    private readonly static int _deadId = Animator.StringToHash("Dead");
 
     public int GetTeamID() 
     {
@@ -51,10 +53,18 @@ public class Player : MonoBehaviour, ITeamInterface, ICameraInterface
         _gameplayWidget.AimStick.OnInputUpdated += AimInputUpdated;
         _gameplayWidget.AimStick.OnInputClicked += SwitchWeapon;
         _gameplayWidget.SetOwner(gameObject);
-
+        _healthComponent = GetComponent<HealthComponent>();
 
         _viewCamera = Instantiate(viewCameraPrefab);
         _viewCamera.SetFollowParent(transform);
+        _healthComponent.OnDead += StartDeathSequence;
+    }
+
+    private void StartDeathSequence()
+    {
+        Debug.Log("Player dEad");
+        _animator.SetTrigger(_deadId);
+        _gameplayWidget.SetGamePlayControlEnabled(false);
     }
 
     private void MoveInputUpdated(Vector2 inputVal)

@@ -8,8 +8,7 @@ public enum TeamAttitude
 }
 
 public interface ITeamInterface
-{
-    public static int GetNeutralTeamID() 
+{    public static int GetNeutralTeamID() 
     {
         return -1;
     }

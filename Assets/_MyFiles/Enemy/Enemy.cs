@@ -14,6 +14,10 @@ public class Enemy : MonoBehaviour, IBehaviorInterface, ITeamInterface
     private PerceptionComponent _perceptionComponent;
     private BehaviorGraphAgent _behaviourGraphAgent;
 
+    public GameObject Target 
+    {
+        get; private set;
+    }
     public int GetTeamID() 
     {
         return teamID;
@@ -37,12 +41,14 @@ public class Enemy : MonoBehaviour, IBehaviorInterface, ITeamInterface
         if (bIsSensed)
         {
             _behaviourGraphAgent.BlackboardReference.SetVariableValue("Target", target);
+            Target = target;
         }
         else
         {
             _behaviourGraphAgent.BlackboardReference.SetVariableValue<GameObject>("Target", null);
             _behaviourGraphAgent.BlackboardReference.SetVariableValue("checkoutLocation", target.transform.position);
             _behaviourGraphAgent.BlackboardReference.SetVariableValue("hasCheckLocation", true);
+            Target = null;
         }
     }
 

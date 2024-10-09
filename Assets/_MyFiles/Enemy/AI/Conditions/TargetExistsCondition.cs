@@ -11,8 +11,16 @@ public partial class TargetExistsCondition : Condition
 
     public override bool IsTrue()
     {
+        /*if(Target.Value != null)
+        {
+            Debug.Log($"found target: {Target.Value}");
+        }
+        else
+        {
+            Debug.Log("cant find target");
+        }*/
         bool targetExists = Target.Value != null;
-        return targetExists && Condition.Value;
+        return targetExists == Condition.Value;
     }
 
 }

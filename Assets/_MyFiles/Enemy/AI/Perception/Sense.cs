@@ -87,6 +87,7 @@ public abstract class Sense : MonoBehaviour
     {
         yield return new WaitForSeconds(forgetTime);
         OnSenseUpdated?.Invoke(stimuli, false);
+        _forgettingCoroutines.Remove(stimuli);
         Debug.Log($"I just lost track of: {stimuli.gameObject.name}");
     }
 

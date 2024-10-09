@@ -23,6 +23,7 @@ public class BoxTriggerDamageComponent : DamageComponent
     }
     private void OnTriggerExit(Collider other)
     {
+        Debug.Log("FLAG !");
         _currentOverlappingTargets.Remove(other.gameObject);
     }
 }

@@ -32,8 +32,8 @@ public class HealthComponent : MonoBehaviour
     public void ChangeHealth(float amt, GameObject instigator)
     {
         if (amt == 0 || _health <= 0) { return; } //personally changed this to <= instead of ==
-        _health = Mathf.Clamp( _health + amt, 0, maxHealth);
 
+        _health = Mathf.Clamp( _health + amt, 0, maxHealth);
         if (amt < 0)
         {
             OnTakeDamage?.Invoke(_health, amt, maxHealth, instigator);
