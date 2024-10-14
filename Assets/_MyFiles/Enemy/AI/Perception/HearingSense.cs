@@ -39,4 +39,8 @@ public class HearingSense : Sense
 
         HandleSensibleStimuli(stimuli);
     }
+    private void OnDestroy()
+    {
+        OnSoundEventSent -= HandleSoundEvent;
+    }
 }

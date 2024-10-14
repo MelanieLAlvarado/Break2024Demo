@@ -63,6 +63,26 @@ public class PerceptionComponent : MonoBehaviour
             }
         }
     }
+    public GameObject GetCurrentTarget() 
+    {
+        if (_currentTargetStimuli)
+        { 
+            return _currentTargetStimuli.gameObject;
+        }
+
+        return null;
+    }
+
+    public void AssignPerceivedStimuli(Stimuli stimuli) 
+    {
+        Sense ownerSense = GetComponent<Sense>();
+
+        if (ownerSense)
+        {
+            ownerSense.HandleSensibleStimuli(stimuli);
+        }
+    }
+
     private void OnDrawGizmos()
     {
         if (_currentSensedStimuliList.Count == 0)

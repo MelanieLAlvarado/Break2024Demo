@@ -3,7 +3,7 @@ using Unity.Behavior;
 using UnityEngine;
 
 [RequireComponent(typeof(HealthComponent))]
-public class Enemy : MonoBehaviour, IBehaviorInterface, ITeamInterface
+public class Enemy : MonoBehaviour, IBehaviorInterface, ITeamInterface, ISpawnInterface
 {
     [SerializeField] private int teamID = 1;
     private HealthComponent _healthComponent;
@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour, IBehaviorInterface, ITeamInterface
         return teamID;
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _healthComponent = GetComponent<HealthComponent>();
         _healthComponent.OnTakeDamage += TookDamage;
@@ -59,7 +59,13 @@ public class Enemy : MonoBehaviour, IBehaviorInterface, ITeamInterface
     }
     private void DeathAnimationFinished() 
     {
+        OnDead();
         Destroy(gameObject);
+    }
+
+    protected virtual void OnDead()
+    {
+        //override in children
     }
 
     private void TookDamage(float newHealth, float delta, float maxHealth, GameObject instigator) 
@@ -67,8 +73,31 @@ public class Enemy : MonoBehaviour, IBehaviorInterface, ITeamInterface
         Debug.Log($"I took {delta} amt of damage, health is not {newHealth}/{maxHealth}");
     }
 
-    public void Attack(GameObject target)
+    public virtual void Attack(GameObject target)
     {
         _animator.SetTrigger("Attack");
+    }
+
+    public void SpawnedBy(GameObject spawningObj)
+    {
+        PerceptionComponent spawnerPerceptionComponent = spawningObj.GetComponent<PerceptionComponent>();
+
+        if (!spawnerPerceptionComponent)
+        {
+            return;
+        }    
+
+        GameObject spawnerTarget = spawnerPerceptionComponent.GetCurrentTarget();
+        if (!spawnerTarget)
+        {
+            return;
+        }
+
+        Stimuli stimuli = spawnerTarget.GetComponent<Stimuli>();
+        if (!stimuli)
+        { 
+        return ;
+        }
+        _perceptionComponent.AssignPerceivedStimuli(stimuli);
     }
 }
