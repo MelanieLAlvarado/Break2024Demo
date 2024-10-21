@@ -9,6 +9,8 @@ using System.Collections;
 [RequireComponent(typeof(HealthComponent))]
 public class Player : MonoBehaviour, ITeamInterface, ICameraInterface
 {
+    MovementComponent _movementComponent;
+
     [SerializeField] private int teamID = 2;
     [SerializeField] private GameplayWidget gameplayWidgetPrefab;
     [SerializeField] private float speed = 10f;
@@ -47,6 +49,7 @@ public class Player : MonoBehaviour, ITeamInterface, ICameraInterface
     {
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+        _movementComponent = GetComponent<MovementComponent>();
         _inventoryComponent = GetComponent<InventoryComponent>();
         _gameplayWidget = Instantiate(gameplayWidgetPrefab);
         _gameplayWidget.MoveStick.OnInputUpdated += MoveInputUpdated;
@@ -98,7 +101,7 @@ public class Player : MonoBehaviour, ITeamInterface, ICameraInterface
     void Update()
     {
         Vector3 moveDir = _viewCamera.InputToWorldDir(_moveInput);
-        _characterController.Move(moveDir * (speed * Time.deltaTime));
+        _characterController.Move(moveDir * (_movementComponent.GetMoveSpeed() * Time.deltaTime));
 
         Vector3 aimDir = _viewCamera.InputToWorldDir(_aimInput);
         if (aimDir == Vector3.zero)
@@ -123,12 +126,7 @@ public class Player : MonoBehaviour, ITeamInterface, ICameraInterface
         float animFwdAmt = Vector3.Dot(moveDir, transform.forward);
         float animRightAmt = Vector3.Dot(moveDir, transform.right);
 
-
         _animator.SetFloat(_animFwdId, animFwdAmt);
         _animator.SetFloat(_animRightId, animRightAmt);
-
-
     }
-
-
 }
