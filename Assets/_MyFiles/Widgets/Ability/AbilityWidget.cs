@@ -8,6 +8,8 @@ public class AbilityWidget : MonoBehaviour
     [SerializeField] RectTransform rootPanel;
     [SerializeField] Image iconImage;
     [SerializeField] Image cooldownImage;
+
+
     [SerializeField] float cooldownUpdateInterval = 0.05f;
 
     [SerializeField] float scaledSize = 1.5f;
@@ -18,6 +20,10 @@ public class AbilityWidget : MonoBehaviour
     Vector3 _goalLocalOffset = Vector3.zero;
     
     Ability _ability;
+
+    [SerializeField] Color canCastColor = Color.white;
+    [SerializeField] Color cannotCastColor = Color.grey;
+
 
     /// <summary>
     /// Set the amount of scale
@@ -35,14 +41,26 @@ public class AbilityWidget : MonoBehaviour
     }
     internal void CastAbility()
     {
-        _ability.ActivateAbility();
+        _ability.TryActivateAbility();
     }
     internal void Init(Ability newAbility)
     {
         _ability = newAbility;
+        if (_ability)
+        {
+            _ability.OnAbilityCooldownStarted += StartCooldown;
+            _ability.OnAbilityCanCastChanged += CanCastStateChanged;
+        }
+
         iconImage.sprite = _ability.GetAbilityIcon();
-        _ability.OnAbilityCooldownStarted += StartCooldown;
+        CanCastStateChanged(_ability.CanCast());
     }
+
+    private void CanCastStateChanged(bool bCanCast)
+    {
+        iconImage.color = _ability.CanCast() ? canCastColor : cannotCastColor;
+    }
+
     private void StartCooldown(float cooldownDuration)
     {
         StartCoroutine(CooldownCoroutine(cooldownDuration));
@@ -56,7 +74,7 @@ public class AbilityWidget : MonoBehaviour
             cooldownImage.fillAmount = cooldownCounter / cooldownDuration;
             yield return new WaitForSeconds(cooldownUpdateInterval);
         }
-
+        Debug.Log(iconImage.name);
         cooldownImage.fillAmount = 0;
     }
 }

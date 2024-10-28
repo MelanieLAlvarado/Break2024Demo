@@ -14,7 +14,7 @@ public class SpeedBoostAbility : Ability
         base.Init(abilitySystemComponent);
         _movementComponent = abilitySystemComponent.GetComponent<MovementComponent>();
     }
-    public override void ActivateAbility()
+    protected override void ActivateAbility()
     {
         if (CommitAbility() && _movementComponent != null)
         {
